@@ -1,18 +1,17 @@
 class Ray {
-	constructor(pos, dir) {
+	constructor(pos, radian) {
 		this.pos = pos;
-		this.dir = dir;
-		this.intersections = [];
+		this.dir = p5.Vector.fromAngle(radian);
 	}
 
 	show() {
-//		stroke('red');
-//		push();
-//		translate(this.pos.x, this.pos.y);
-//		line(0, 0, this.dir.x, this.dir.y);
-//		pop();
 		stroke('red');
-		line(this.pos.x, this.pos.y, this.dir.x, this.dir.y)
+		push();
+		translate(this.pos.x, this.pos.y);
+		line(0, 0, this.dir.x * 100, this.dir.y * 100);
+		pop();
+		// stroke('red');
+		// line(this.pos.x, this.pos.y, this.dir.x, this.dir.y)
 	}
 
 	lookAt(x, y) {
@@ -54,6 +53,7 @@ class Ray {
 
 	updateIntersections () {
 		this.intersections = []
+		this.intersections.push(this.dir);
 
 		for (let j = 0; j < boundaries.length; j++) {
 			let intersection = this.cast(boundaries[j]);

@@ -12,9 +12,9 @@ function setup() {
 	castPoints.push(createVector(width, height))
 
 	newBoundary(100, 100, 300, 100);
-	// newBoundary(100, 150, 300, 150);
+	newBoundary(50, 200, 100, 300);
 	newBoundary(300, 200, 300, 350);
-	newBoundary(100, 150, 300, 150);
+	// newBoundary(100, 150, 300, 150);
 
 	particle = new Particle();
 }
@@ -25,11 +25,14 @@ function draw() {
 
 	for (let i = 0; i < boundaries.length; i++) {
 		boundaries[i].show();
+		particle.look(boundaries[i])
 	}
 
 //	console.log(particle.rays[0].dir.x, particle.rays[0].dir.y);
 	particle.move();
+	console.log(particle.rays.length);
 	particle.show();
+	
 
 	for (let i = 0; i < particle.rays.length; i++) {
 		// particle.rays[i].lookAt(mouseX, mouseY);
