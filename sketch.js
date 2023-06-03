@@ -1,47 +1,33 @@
 let boundaries = [];
-let castPoints = [];
-let closestIntersections = [];
-
 let particle;
+let numRays = 360
 
 function setup() {
 	createCanvas(400, 400)
-	castPoints.push(createVector(0, 0))
-	castPoints.push(createVector(width, 0))
-	castPoints.push(createVector(0, height))
-	castPoints.push(createVector(width, height))
+
+	particle = new Particle();
 
 	newBoundary(100, 100, 300, 100);
 	newBoundary(50, 200, 100, 300);
 	newBoundary(300, 200, 300, 350);
-	// newBoundary(100, 150, 300, 150);
-
-	particle = new Particle();
+	newBoundary(50, 50, 350, 350);
+//	newBoundary(350, 200, 350, 350);
+//	newBoundary(370, 200, 370, 350);
 }
 
 function draw() {
 	background(0);
-	drawPoints(castPoints, 'white');
 
-	for (let i = 0; i < boundaries.length; i++) {
-		boundaries[i].show();
-		particle.look(boundaries[i])
-	}
+//	for (let i = 0; i < boundaries.length; i++) {
+//		boundaries[i].show();
+//	}
 
-//	console.log(particle.rays[0].dir.x, particle.rays[0].dir.y);
 	particle.move();
-	console.log(particle.rays.length);
-	particle.show();
-	
+	// particle.showAllRays();
 
-	for (let i = 0; i < particle.rays.length; i++) {
-		// particle.rays[i].lookAt(mouseX, mouseY);
-		particle.rays[i].updateIntersections();
+	particle.updateAllIntersections();
 
-		let points = particle.rays[i].getIntersections();
+	particle.showCorrectRays();
+	console.log(particle.rays.length)
 
-		drawPoints(points, 'blue');
-	}
-
-	drawPoints(closestIntersections, 'green');
 }

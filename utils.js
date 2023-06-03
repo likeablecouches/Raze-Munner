@@ -2,6 +2,7 @@ function drawPoint(vector, color) {
 	noStroke();
 	fill(color);
 	ellipse(vector.x, vector.y, 8, 8);
+
 }
 
 function drawPoints(points, color) {
@@ -12,6 +13,4 @@ function drawPoints(points, color) {
 
 function newBoundary(x1, y1, x2, y2) {
 	boundaries.push(new Boundary(x1, y1, x2, y2));
-	castPoints.push(createVector(x1, y1))
-	castPoints.push(createVector(x2, y2))
 }

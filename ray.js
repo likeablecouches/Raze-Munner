@@ -1,17 +1,15 @@
 class Ray {
 	constructor(pos, radian) {
 		this.pos = pos;
-		this.dir = p5.Vector.fromAngle(radian);
+		this.dir = p5.Vector.fromAngle(radian, 10000);
 	}
 
 	show() {
-		stroke('red');
+		stroke('white');
 		push();
 		translate(this.pos.x, this.pos.y);
-		line(0, 0, this.dir.x * 100, this.dir.y * 100);
+		line(0, 0, this.dir.x, this.dir.y);
 		pop();
-		// stroke('red');
-		// line(this.pos.x, this.pos.y, this.dir.x, this.dir.y)
 	}
 
 	lookAt(x, y) {
@@ -32,8 +30,8 @@ class Ray {
 
 		const x3 = this.pos.x;
 		const y3 = this.pos.y;
-		const x4 = this.dir.x;
-		const y4 = this.dir.y;
+		const x4 = this.pos.x + this.dir.x;
+		const y4 = this.pos.y + this.dir.y;
 
 		const den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 		if (den == 0) {return;}
@@ -53,7 +51,6 @@ class Ray {
 
 	updateIntersections () {
 		this.intersections = []
-		this.intersections.push(this.dir);
 
 		for (let j = 0; j < boundaries.length; j++) {
 			let intersection = this.cast(boundaries[j]);
@@ -61,9 +58,26 @@ class Ray {
 				this.intersections.push(intersection);
 			}
 		}
+
 	}
 
 	getIntersections() {
 		return this.intersections;
+	}
+
+	getClosestIntersection() {
+		let closestIntersection;
+		let smallestDist = Number.MAX_VALUE
+		let curDist;
+
+		for (let intersection of this.getIntersections()) {
+			curDist = this.pos.dist(intersection);
+			if (curDist < smallestDist) {
+				closestIntersection = intersection;
+				smallestDist = curDist;
+			}
+		}
+
+		return closestIntersection;
 	}
 }
