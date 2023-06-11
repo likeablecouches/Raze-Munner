@@ -13,6 +13,8 @@ var stack = [];
 let isGenerating;
 
 // performance tracking
+let totalRunTimeMs = 0;
+let adjustedFrameCount = 0;
 
 function setup() {
 	createCanvas(800, 600)
@@ -66,5 +68,8 @@ function draw() {
  	particle.updateAllIntersections();
 	particle.showCorrectRays();
 
-	displayDeltaTime();
+	adjustedFrameCount++;
+	totalRunTimeMs += deltaTime;
+
+	displayPerformance();
 }
