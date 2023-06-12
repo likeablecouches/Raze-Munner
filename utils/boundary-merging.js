@@ -33,12 +33,12 @@ function connectAdjBoundariesInRow(boundaryRow) {
 	boundaryRow.sort((bound1, bound2) => bound1.a.x - bound2.a.x);
 
 	if (boundaryRow.length != 0) {
-		lastX = boundaryRow[0].a.x - w; 
+		lastX = boundaryRow[0].a.x - cellWidth; 
 	}
 
 	for (let i = 0; i < boundaryRow.length; i++) {
 		let boundary = boundaryRow[i];
-		let connected = isConnecting(boundary, lastX, "horizontal", w);
+		let connected = isConnecting(boundary, lastX, "horizontal", cellWidth);
 
 		debugString = `Index: ${i}| Pos: ${boundary.a.x}, ${boundary.a.y}   ${boundary.b.x}, ${boundary.b.y}| lastX: ${lastX}| adjBoundaries size: ${adjBoundaries.length}`
 
@@ -48,7 +48,7 @@ function connectAdjBoundariesInRow(boundaryRow) {
 			console.log(debugString);
 
 			if (i != boundaryRow.length - 1) {
-				lastX += w;
+				lastX += cellWidth;
 				continue;
 			}
 		}
@@ -86,12 +86,12 @@ function connectAdjBoundariesInCol(boundaryCol) {
 	boundaryCol.sort((bound1, bound2) => bound1.a.y - bound2.a.y);
 
 	if (boundaryCol.length != 0) {
-		lastY = boundaryCol[0].a.y - w; 
+		lastY = boundaryCol[0].a.y - cellWidth; 
 	}
 
 	for (let i = 0; i < boundaryCol.length; i++) {
 		let boundary = boundaryCol[i];
-		let connected = isConnecting(boundary, lastY, "vertical", w);
+		let connected = isConnecting(boundary, lastY, "vertical", cellWidth);
 
 		debugString = `Index: ${i}| Pos: ${boundary.a.x}, ${boundary.a.y}   ${boundary.b.x}, ${boundary.b.y}| lastX: ${lastY}| adjBoundaries size: ${adjBoundaries.length}`
 
@@ -101,7 +101,7 @@ function connectAdjBoundariesInCol(boundaryCol) {
 			console.log(debugString);
 
 			if (i != boundaryCol.length - 1) {
-				lastY += w;
+				lastY += cellWidth;
 				continue;
 			}
 		}
@@ -169,14 +169,14 @@ function filterAndRemoveBoundariesInCol(xCoord) {
 function connectAdjacentBoundaries() {
 	let curBoundaries = [];
 
-	for (let y = 0; y < height; y += w) {
+	for (let y = 0; y < height; y += cellWidth) {
 
 		curBoundaries = filterAndRemoveBoundariesInRow(y);
 		boundaries = boundaries.concat(connectAdjBoundariesInRow(curBoundaries));
 		// console.log(`Y: ${y}`);
 	}
 
-	for (let x = 0; x <= width; x += w) {
+	for (let x = 0; x <= width; x += cellWidth) {
 		curBoundaries = filterAndRemoveBoundariesInCol(x);
 		boundaries = boundaries.concat(connectAdjBoundariesInCol(curBoundaries));
 	}

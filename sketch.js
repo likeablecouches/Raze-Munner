@@ -6,7 +6,7 @@ let numRays = 360
 
 // maze generation variables
 var cols, rows;
-var w = 80;
+var cellWidth = 80;
 var grid = [];
 var current;
 var stack = [];
@@ -21,8 +21,8 @@ function setup() {
 
 	isGenerating = true;
 
-	cols = floor(width / w);
-	rows = floor(height / w);
+	cols = floor(width / cellWidth);
+	rows = floor(height / cellWidth);
 
 	initializeGrid();
 

@@ -16,20 +16,20 @@ function createBoundariesFromGrid() {
 	for (let i = 0; i < grid.length; i++) {
 		curCell = grid[i];
 
-		var x = curCell.i * w;
-		var y = curCell.j * w;
+		var x = curCell.i * cellWidth;
+		var y = curCell.j * cellWidth;
 
 		if (curCell.walls[0]) {
-		  newBoundary(x, y, x + w, y);
+		  newBoundary(x, y, x + cellWidth, y);
 		}
 		if (curCell.walls[1]) {
-		  newBoundary(x + w, y, x + w, y + w);
+		  newBoundary(x + cellWidth, y, x + cellWidth, y + cellWidth);
 		}
 		if (curCell.walls[2]) {
-		  newBoundary(x + w, y + w, x, y + w);
+		  newBoundary(x + cellWidth, y + cellWidth, x, y + cellWidth);
 		}
 		if (curCell.walls[3]) {
-		  newBoundary(x, y + w, x, y);
+		  newBoundary(x, y + cellWidth, x, y);
 		}
 	}
 }
