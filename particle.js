@@ -1,5 +1,5 @@
 class Particle {
-	constructor() {
+	constructor(radius) {
 		this.pos = createVector(cellWidth / 2, cellWidth / 2);
 		this.rays = []
 
@@ -7,6 +7,8 @@ class Particle {
 			this.rays.push(new Ray(this.pos, radians(i)));
 		}
 
+		this.hitboxRadius = radius;
+		this.isDragged = false;
 	}
 
 	showFullRays() {
@@ -15,16 +17,6 @@ class Particle {
 			ray.show();
 		}
 	}
-
-//	look(wall) {
-//		for (let ray of this.rays) {
-//			const pt = ray.cast(wall);
-//			if (pt) {
-//				drawPoint(pt, 'blue');
-//				line(this.pos.x, this.pos.y, pt.x, pt.y)
-//			}
-//		}
-//	}
 
  	showCorrectRays() {
  		for (let ray of this.rays) {
@@ -54,13 +46,52 @@ class Particle {
 		}
 	}
 
-	move() {
-		this.pos.x = mouseX;
-		this.pos.y = mouseY;
+	isHovered() {
+		let distFromMouse = dist(this.pos.x, this.pos.y, mouseX, mouseY);
 
-		for (let ray of this.rays) {
-			ray.move(this.pos);
+		if (distFromMouse < this.hitboxRadius) {
+			return true;
 		}
+
+		return false;
+	}
+
+	showHitbox() {
+		let color;
+
+		if (this.isDragged) {
+			color = 'red';
+		} else if (this.isHovered()) {
+			color = 'green';
+		} else {
+			color = 'navy';
+		}
+
+		push();
+		stroke(color);
+		strokeWeight(4);
+		noFill();
+		circle(this.pos.x, this.pos.y, this.hitboxRadius * 2);
+		pop();
+	}
+
+	move() {
+		if (this.isDragged) {
+			this.pos.x = mouseX;
+			this.pos.y = mouseY;
+
+			for (let ray of this.rays) {
+				ray.move(this.pos);
+			}
+		}
+	}
+
+	startDrag() {
+		this.isDragged = true;
+	}
+
+	endDrag() {
+		this.isDragged = false;
 	}
 
 	updateAllIntersections() {

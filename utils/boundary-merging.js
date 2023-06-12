@@ -40,12 +40,12 @@ function connectAdjBoundariesInRow(boundaryRow) {
 		let boundary = boundaryRow[i];
 		let connected = isConnecting(boundary, lastX, "horizontal", cellWidth);
 
-		debugString = `Index: ${i}| Pos: ${boundary.a.x}, ${boundary.a.y}   ${boundary.b.x}, ${boundary.b.y}| lastX: ${lastX}| adjBoundaries size: ${adjBoundaries.length}`
+		// debugString = `Index: ${i}| Pos: ${boundary.a.x}, ${boundary.a.y}   ${boundary.b.x}, ${boundary.b.y}| lastX: ${lastX}| adjBoundaries size: ${adjBoundaries.length}`
 
 		if (connected) {
-			debugString += " Pushed!";
+			// debugString += " Pushed!";
 			adjBoundaries.push(boundary);
-			console.log(debugString);
+			// console.log(debugString);
 
 			if (i != boundaryRow.length - 1) {
 				lastX += cellWidth;
@@ -93,12 +93,12 @@ function connectAdjBoundariesInCol(boundaryCol) {
 		let boundary = boundaryCol[i];
 		let connected = isConnecting(boundary, lastY, "vertical", cellWidth);
 
-		debugString = `Index: ${i}| Pos: ${boundary.a.x}, ${boundary.a.y}   ${boundary.b.x}, ${boundary.b.y}| lastX: ${lastY}| adjBoundaries size: ${adjBoundaries.length}`
+		// debugString = `Index: ${i}| Pos: ${boundary.a.x}, ${boundary.a.y}   ${boundary.b.x}, ${boundary.b.y}| lastX: ${lastY}| adjBoundaries size: ${adjBoundaries.length}`
 
 		if (connected) {
-			debugString += " Pushed!";
+			// debugString += " Pushed!";
 			adjBoundaries.push(boundary);
-			console.log(debugString);
+			// console.log(debugString);
 
 			if (i != boundaryCol.length - 1) {
 				lastY += cellWidth;
@@ -107,8 +107,8 @@ function connectAdjBoundariesInCol(boundaryCol) {
 		}
 
 		if (!connected) {
-			debugString += " Disconnected";
-			console.log(debugString);
+			// debugString += " Disconnected";
+			// console.log(debugString);
 		}
 
 		let leftmostBoundary = adjBoundaries[0];

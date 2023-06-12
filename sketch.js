@@ -28,11 +28,17 @@ function setup() {
 
 	current = grid[0];
 
-	particle = new Particle();
+	particle = new Particle(15);
+}
 
-//	newBoundary(50, 200, 100, 300);
-//	newBoundary(300, 200, 300, 350);
-//	newBoundary(50, 50, 350, 350);
+function mousePressed() {
+	if (particle.isHovered()) {
+		particle.startDrag();
+	}
+}
+
+function mouseReleased() {
+	particle.endDrag();
 }
 
 function draw() {
@@ -47,29 +53,23 @@ function draw() {
 
 		createBoundariesFromGrid();
 		connectAdjacentBoundaries();
-		// console.log(boundaries.length);
-
-		// for (let boundary of boundaries) {
-		// 	console.log(`${boundary.a.x}, ${boundary.a.y}   ${boundary.b.x}, ${boundary.b.y}`);
-		// }
 	}
 
 	if (isGenerating) {
 		return;
 	}
 
-	drawBoundaries(true);
+	// drawBoundaries(true);
 
 	// raycasting and particle movement
-
 	particle.move();
-	// particle.showAllRays();
 
  	particle.updateAllIntersections();
 	particle.showCorrectRays();
+	particle.showHitbox();
 
 	adjustedFrameCount++;
 	totalRunTimeMs += deltaTime;
 
-	displayPerformance();
+	// displayPerformance();
 }
