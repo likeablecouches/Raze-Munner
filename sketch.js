@@ -3,6 +3,7 @@ let boundaries = [];
 // particle variables
 let particle;
 let numRays = 360
+let respawnVector;
 
 // maze generation variables
 var cols, rows;
@@ -28,7 +29,8 @@ function setup() {
 
 	current = grid[0];
 
-	particle = new Particle(15);
+	respawnVector = createVector(cellWidth / 2, cellWidth / 2);
+	particle = new Particle(10);
 }
 
 function mousePressed() {
