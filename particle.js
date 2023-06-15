@@ -1,5 +1,5 @@
 class Particle {
-	constructor(radius) {
+	constructor(radius, speed) {
 		this.pos = createVector(respawnVector.x, respawnVector.y);
 		this.rays = []
 
@@ -9,6 +9,7 @@ class Particle {
 
 		this.hitboxRadius = radius;
 		this.isDragged = false;
+		this.velocity = speed;
 	}
 
 	showFullRays() {
@@ -118,20 +119,45 @@ class Particle {
 		return false;
 	}
 
+	checkCollisionWithCircle(circleObj) {
+		let dist = this.pos.dist(circleObj.pos);
+
+		if (dist < this.hitboxRadius + circleObj.radius) {
+			return true;
+		}
+		
+		return false;
+	}
+
 	resetPosition() {
 		this.pos.x = respawnVector.x;
 		this.pos.y = respawnVector.y;
 	}
 
 	move() {
-		if (this.isDragged) {
-			this.pos.x = mouseX;
-			this.pos.y = mouseY;
-
-			for (let ray of this.rays) {
-				ray.move(this.pos);
-			}
+		// keyboard based movement
+		if (keyIsDown(87)) { // up
+			this.pos.y -= this.velocity;
+		} else if(keyIsDown(83)) { // down
+			this.pos.y += this.velocity;
 		}
+
+		if (keyIsDown(65)) { // left
+			this.pos.x -= this.velocity;
+		} else if(keyIsDown(68)) { // right
+			this.pos.x += this.velocity;
+		}
+
+		// mouse based movement
+		//
+		// if (this.isDragged) {
+		// 	this.pos.x = mouseX;
+		// 	this.pos.y = mouseY;
+
+		// 	for (let ray of this.rays) {
+		// 		ray.move(this.pos);
+		// 	}
+		// }
 
 		let isColliding = this.checkCollisionWithAllBoundaries();
 

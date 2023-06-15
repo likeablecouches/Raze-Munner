@@ -2,8 +2,15 @@ let boundaries = [];
 
 // particle variables
 let particle;
-let numRays = 360
+let numRays = 20;
 let respawnVector;
+
+// The particle speed must be less than its hitbox diameter to avoid
+// warping through walls(speed < 20 in this case). If the particle is too fast,
+// it is possible for the particle to pass a wall but never actually collide
+// with it.
+
+let particleSpeed = 3;
 
 // maze generation variables
 var cols, rows;
@@ -12,6 +19,11 @@ var grid = [];
 var current;
 var stack = [];
 let isGenerating;
+let startCell;
+
+// game progression
+let finishCell;
+let finishCircle;
 
 // performance tracking
 let totalRunTimeMs = 0;
@@ -20,17 +32,14 @@ let adjustedFrameCount = 0;
 function setup() {
 	createCanvas(800, 600)
 
-	isGenerating = true;
-
 	cols = floor(width / cellWidth);
 	rows = floor(height / cellWidth);
 
 	initializeGrid();
 
-	current = grid[0];
+	startMazeGeneration();
 
-	respawnVector = createVector(cellWidth / 2, cellWidth / 2);
-	particle = new Particle(10);
+	particle = new Particle(10, particleSpeed);
 }
 
 function mousePressed() {
@@ -50,11 +59,10 @@ function draw() {
 		updateMaze();
 	}
 
-	if (current.i == 0 && current.j == 0 && isGenerating) {
+	if (current.i == startCell.i && current.j == startCell.j && isGenerating) {
 		isGenerating = false;
-
 		createBoundariesFromGrid();
-		connectAdjacentBoundaries();
+		// connectAdjacentBoundaries();
 	}
 
 	if (isGenerating) {
@@ -69,6 +77,14 @@ function draw() {
  	particle.updateAllIntersections();
 	particle.showCorrectRays();
 	particle.showHitbox();
+
+	if (particle.checkCollisionWithCircle(finishCircle)) {
+		// console.log('here')
+		startMazeGeneration();
+		resetMaze();
+	}
+
+	finishCircle.show();
 
 	adjustedFrameCount++;
 	totalRunTimeMs += deltaTime;

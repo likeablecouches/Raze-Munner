@@ -19,6 +19,8 @@ function createBoundariesFromGrid() {
 		var x = curCell.i * cellWidth;
 		var y = curCell.j * cellWidth;
 
+		// console.log(`${i}: ${curCell.walls}`);
+
 		if (curCell.walls[0]) {
 		  newBoundary(x, y, x + cellWidth, y);
 		}
@@ -40,11 +42,8 @@ function updateMaze() {
 		return;
 	}
 
-	for (var i = 0; i < grid.length; i++) {
-	  grid[i].show();
-	}
-
 	current.visited = true;
+	// console.log('updatemaze')
 	// STEP 1
 	var next = current.checkNeighbors();
 	if (next) {
@@ -60,6 +59,10 @@ function updateMaze() {
 	  current = next;
 	} else if (stack.length > 0) {
 	  current = stack.pop();
+	}
+
+	for (var i = 0; i < grid.length; i++) {
+	  grid[i].show();
 	}
 
 	current.highlight();
@@ -89,4 +92,40 @@ function index(i, j) {
 	  return -1;
 	}
 	return i + j * cols;
+}
+
+function resetMaze() {
+	for (let cell of grid) {
+		cell.visited = false;
+		cell.restoreWalls();
+	}
+}
+
+function startMazeGeneration() {
+	isGenerating = true;
+	
+	if (current == grid[0]) {
+		current = grid[grid.length - 1];
+		finishCell = grid[0];
+	} else {
+		current = grid[0];
+		finishCell = grid[grid.length - 1];
+	}
+
+	startCell = current;
+
+	if (!finishCircle) {
+		finishCircle = new FinishCircle(finishCell.i * cellWidth + cellWidth / 2, finishCell.j * cellWidth + cellWidth / 2, 30);
+	} else {
+		finishCircle.pos.x = finishCell.i * cellWidth + cellWidth / 2;
+		finishCircle.pos.y = finishCell.j * cellWidth + cellWidth / 2;
+	}
+
+	respawnVector = createVector(current.i * cellWidth + cellWidth / 2, current.j * cellWidth + cellWidth / 2);
+
+	// console.log(`current: ${current.i}, ${current.j}`);
+	// console.log(`finish cell: ${finishCell.i * cellWidth}, ${finishCell.j * cellWidth}`);
+	// console.log(`resp vector: ${respawnVector.x}, ${respawnVector.y}`);
+	// console.log(`finishCircle: ${finishCircle.pos.x}, ${finishCircle.pos.y}`);
+	// console.log(stack);
 }

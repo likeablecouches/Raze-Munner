@@ -65,7 +65,10 @@ function Cell(i, j) {
 	this.show = function() {
 		var x = this.i * cellWidth;
 		var y = this.j * cellWidth;
+
 		stroke(255);
+		// strokeWeight(2);
+
 		if (this.walls[0]) {
 		  line(x, y, x + cellWidth, y);
 		}
@@ -83,6 +86,14 @@ function Cell(i, j) {
 		  noStroke();
 		  fill("black");
 		  rect(x, y, cellWidth, cellWidth);
+		}
+	}
+
+	this.restoreWalls = function() {
+		for (let i = 0; i < this.walls.length; i++) {
+			if (!this.walls[i]) {
+				this.walls[i] = true;
+			}
 		}
 	}
 }
