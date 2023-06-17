@@ -6,9 +6,9 @@ let numRays = 20;
 let respawnVector;
 
 // The particle speed must be less than its hitbox diameter to avoid
-// warping through walls(speed < 20 in this case). If the particle is too fast,
-// it is possible for the particle to pass a wall but never actually collide
-// with it.
+// warping through walls(particleSpeed < 20 in this case). If the particle is
+// too fast, it is possible for the particle to pass a wall but never actually
+// collide with it.
 
 let particleSpeed = 3;
 
@@ -62,14 +62,15 @@ function draw() {
 	if (current.i == startCell.i && current.j == startCell.j && isGenerating) {
 		isGenerating = false;
 		createBoundariesFromGrid();
-		// connectAdjacentBoundaries();
+		connectAdjacentBoundaries();
+
 	}
 
 	if (isGenerating) {
 		return;
 	}
 
-	// drawBoundaries(true);
+	drawBoundaries(true);
 
 	// raycasting and particle movement
 	particle.move();
@@ -80,8 +81,8 @@ function draw() {
 
 	if (particle.checkCollisionWithCircle(finishCircle)) {
 		// console.log('here')
-		startMazeGeneration();
 		resetMaze();
+		startMazeGeneration();
 	}
 
 	finishCircle.show();

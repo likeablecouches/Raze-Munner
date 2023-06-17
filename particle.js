@@ -65,7 +65,7 @@ class Particle {
 		} else if (this.isHovered()) {
 			color = 'green';
 		} else {
-			color = 'navy';
+			color = 'aqua';
 		}
 
 		push();

@@ -1,5 +1,10 @@
 class Boundary {
-	constructor(x1, y1, x2, y2) {
+	constructor(x1, y1, x2, y2, parentCellIndex) {
+		if (parentCellIndex === null) {
+			console.log('here')
+			return;
+		}
+
 		if (x1 <= x2 && y1 <= y2) {
 			this.a = createVector(x1, y1);
 			this.b = createVector(x2, y2);
