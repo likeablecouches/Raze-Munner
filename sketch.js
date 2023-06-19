@@ -10,11 +10,13 @@ let respawnVector;
 // too fast, it is possible for the particle to pass a wall but never actually
 // collide with it.
 
-let particleSpeed = 3;
+let particleSpeed = 5;
 
 // maze generation variables
 var cols, rows;
-var cellWidth = 80;
+var cellWidth = 100;
+var cellWidthLimit = 40;
+// var cellWidthLimit = 
 var grid = [];
 var current;
 var stack = [];
@@ -24,6 +26,7 @@ let startCell;
 // game progression
 let finishCell;
 let finishCircle;
+let currentLevel = 1;
 
 // performance tracking
 let totalRunTimeMs = 0;
@@ -35,7 +38,7 @@ function setup() {
 	cols = floor(width / cellWidth);
 	rows = floor(height / cellWidth);
 
-	initializeGrid();
+	newGrid();
 
 	startMazeGeneration();
 
@@ -54,7 +57,7 @@ function mouseReleased() {
 
 function draw() {
 	background(0);
- 
+
 	if (isGenerating) {
 		updateMaze();
 	}
@@ -63,6 +66,7 @@ function draw() {
 		isGenerating = false;
 		createBoundariesFromGrid();
 		connectAdjacentBoundaries();
+		particle.resetPosition();
 
 	}
 
@@ -70,7 +74,7 @@ function draw() {
 		return;
 	}
 
-	drawBoundaries(true);
+	// drawBoundaries(true);
 
 	// raycasting and particle movement
 	particle.move();
@@ -79,13 +83,39 @@ function draw() {
 	particle.showCorrectRays();
 	particle.showHitbox();
 
+	finishCircle.show();
+
+	fill(255);
+	stroke(0);
+	textSize(16);
+	text(`Level: ${str(currentLevel)}`, width - 70, 30);
+
 	if (particle.checkCollisionWithCircle(finishCircle)) {
 		// console.log('here')
-		resetMaze();
+		
+		if (cellWidth > cellWidthLimit) {
+			cellWidth -= 10;
+		}
+
+		cols = floor(width / cellWidth);
+		rows = floor(height / cellWidth);
+
+		newGrid();
+		boundaries = [];
+
 		startMazeGeneration();
+		currentLevel++;
 	}
 
-	finishCircle.show();
+	// stroke('red');
+	// noFill();
+	// rect(startCell.i * cellWidth, startCell.j * cellWidth, cellWidth, cellWidth);
+
+	// stroke('green');
+	// rect(finishCell.i * cellWidth, finishCell.j * cellWidth, cellWidth, cellWidth);
+
+	// console.log(`${startCell.x}, ${startCell.y}`)
+	// console.log(`${finishCell.x}, ${finishCell.y}`)
 
 	adjustedFrameCount++;
 	totalRunTimeMs += deltaTime;
