@@ -23,10 +23,18 @@ class Ray {
 	}
 
 	cast(wall) {
-		const x1 = wall.a.x;
-		const y1 = wall.a.y;
-		const x2 = wall.b.x;
-		const y2 = wall.b.y;
+		let x1 = wall.a.x;
+		let y1 = wall.a.y;
+		let x2 = wall.b.x;
+		let y2 = wall.b.y;
+
+		if (wall.orientation == "horizontal") {
+			x1 -= boundaryPadding;
+			x2 += boundaryPadding;
+		} else {
+			y1 -= boundaryPadding;
+			y2 += boundaryPadding;
+		}
 
 		const x3 = this.pos.x;
 		const y3 = this.pos.y;

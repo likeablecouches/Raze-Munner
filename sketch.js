@@ -2,8 +2,15 @@ let boundaries = [];
 
 // particle variables
 let particle;
-let numRays = 20;
+let numRays = 360;
 let respawnVector;
+
+// By default, rays will occasionally seem to leak through areas where two
+// boundaries meet. boundaryPadding is used to pad out the boundaires by a
+// marginal amount in order to full close off the tiny open spaces between
+// boundaries.
+
+let boundaryPadding = 0.3;
 
 // The particle speed must be less than its hitbox diameter to avoid
 // warping through walls(particleSpeed < 20 in this case). If the particle is
@@ -14,7 +21,7 @@ let particleSpeed = 5;
 
 // maze generation variables
 var cols, rows;
-var cellWidth = 100;
+var cellWidth = 60;
 var cellWidthLimit = 40;
 // var cellWidthLimit = 
 var grid = [];

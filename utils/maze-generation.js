@@ -98,8 +98,6 @@ function index(i, j) {
 function startMazeGeneration() {
 	isGenerating = true;
 
-	console.log(current);
-
 	if (!current || current.i != grid[0].i || current.j != grid[0].j) {
 		current = grid[0];
 		finishCell = grid[grid.length - 1];

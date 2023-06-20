@@ -13,6 +13,14 @@ class Boundary {
 			this.b = createVector(x1, y1);
 		}
 
+		this.orientation;
+
+		if (this.a.x == this.b.x) {
+			this.orientation = "vertical";
+		} else {
+			this.orientation = "horizontal";
+		}
+
 		this.red = random(255);
 		this.green = random(255);
 		this.blue = random(255);
