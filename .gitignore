@@ -2,3 +2,6 @@ package.json
 package-lock.json
 implementation-plan
 paster
+performance-stats
+.eslintrc.json
+performance-stats

@@ -1,5 +1,7 @@
-function newBoundary(x1, y1, x2, y2, parentCellIndex) {
-	let newBound = new Boundary(x1, y1, x2, y2, parentCellIndex);
+function newBoundary(x1, y1, x2, y2) {
+	// Wrapper function to make sure all boundaries are in the boundaries array
+
+	let newBound = new Boundary(x1, y1, x2, y2);
 	boundaries.push(newBound);
 }
 
@@ -23,16 +25,16 @@ function createBoundariesFromGrid() {
 		var y = curCell.j * cellWidth;
 
 		if (curCell.walls[0]) {
-			newBoundary(x, y, x + cellWidth, y, i);
+			newBoundary(x, y, x + cellWidth, y);
 		}
 		if (curCell.walls[1]) {
-			newBoundary(x + cellWidth, y, x + cellWidth, y + cellWidth, i);
+			newBoundary(x + cellWidth, y, x + cellWidth, y + cellWidth);
 		}
 		if (curCell.walls[2]) {
-			newBoundary(x + cellWidth, y + cellWidth, x, y + cellWidth, i);
+			newBoundary(x + cellWidth, y + cellWidth, x, y + cellWidth);
 		}
 		if (curCell.walls[3]) {
-			newBoundary(x, y + cellWidth, x, y, i);
+			newBoundary(x, y + cellWidth, x, y);
 		}
 	}
 }
@@ -102,7 +104,6 @@ function startMazeGeneration() {
 		current = grid[0];
 		finishCell = grid[grid.length - 1];
 	} else {
-		console.log('here')
 		current = grid[grid.length - 1];
 		finishCell = grid[0];
 	}

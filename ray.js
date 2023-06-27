@@ -1,6 +1,10 @@
 class Ray {
 	constructor(pos, radian) {
 		this.pos = pos;
+
+		// Represents the coordinates of the ray's endpoint, relative to its
+		// starting position. Its length should be arbitrarily long, longer
+		// than the dimensions of the map.
 		this.dir = p5.Vector.fromAngle(radian, 10000);
 	}
 
@@ -12,22 +16,20 @@ class Ray {
 		pop();
 	}
 
-	lookAt(x, y) {
-		this.dir.x = x - this.pos.x;
-		this.dir.y = y - this.pos.y;
-		this.dir.normalize();
-	}
-
 	move(pos) {
 		this.pos = pos;
 	}
 
 	cast(wall) {
+		// Return the point at which the ray intersects with the given wall.
+		// None otherwise.
+
 		let x1 = wall.a.x;
 		let y1 = wall.a.y;
 		let x2 = wall.b.x;
 		let y2 = wall.b.y;
 
+		// Pad the boundary to prevent ray leaking. See sketch.js for more details.
 		if (wall.orientation == "horizontal") {
 			x1 -= boundaryPadding;
 			x2 += boundaryPadding;
@@ -57,7 +59,9 @@ class Ray {
 		else {return;}
 	}
 
-	updateIntersections () {
+	updateIntersections() {
+		// Update the ray's intersections with all boundaries given its current position
+
 		this.intersections = []
 
 		for (let j = 0; j < boundaries.length; j++) {
@@ -74,6 +78,8 @@ class Ray {
 	}
 
 	getClosestIntersection() {
+		// Return point of closest intersection with respect to the ray's origin
+
 		let closestIntersection;
 		let smallestDist = Number.MAX_VALUE
 		let curDist;

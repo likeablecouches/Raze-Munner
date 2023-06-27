@@ -10,7 +10,7 @@ let respawnVector;
 // marginal amount in order to full close off the tiny open spaces between
 // boundaries.
 
-let boundaryPadding = 0.3;
+let boundaryPadding = 0.1;
 
 // The particle speed must be less than its hitbox diameter to avoid
 // warping through walls(particleSpeed < 20 in this case). If the particle is
@@ -21,9 +21,8 @@ let particleSpeed = 5;
 
 // maze generation variables
 var cols, rows;
-var cellWidth = 60;
+var cellWidth = 80;
 var cellWidthLimit = 40;
-// var cellWidthLimit = 
 var grid = [];
 var current;
 var stack = [];
@@ -37,6 +36,7 @@ let currentLevel = 1;
 
 // performance tracking
 let totalRunTimeMs = 0;
+// total frames drawn after first maze generation
 let adjustedFrameCount = 0;
 
 function setup() {
@@ -52,15 +52,17 @@ function setup() {
 	particle = new Particle(10, particleSpeed);
 }
 
-function mousePressed() {
-	if (particle.isHovered()) {
-		particle.startDrag();
-	}
-}
-
-function mouseReleased() {
-	particle.endDrag();
-}
+// Mouse based movement is deprecated.
+//
+// function mousePressed() {
+// 	if (particle.isHovered()) {
+// 		particle.startDrag();
+// 	}
+// }
+// 
+// function mouseReleased() {
+// 	particle.endDrag();
+// }
 
 function draw() {
 	background(0);
@@ -69,11 +71,17 @@ function draw() {
 		updateMaze();
 	}
 
-	if (current.i == startCell.i && current.j == startCell.j && isGenerating) {
+	if (current == startCell && isGenerating) {
 		isGenerating = false;
+
+		// Grid displayed during maze generation does not contain any actual
+		// concrete walls that are detectable by the particle.
 		createBoundariesFromGrid();
+
+		// premature optimization :)
 		connectAdjacentBoundaries();
-		particle.resetPosition();
+
+		particle.respawn();
 
 	}
 
@@ -92,18 +100,15 @@ function draw() {
 
 	finishCircle.show();
 
-	fill(255);
-	stroke(0);
-	textSize(16);
-	text(`Level: ${str(currentLevel)}`, width - 70, 30);
+	drawText(`Level: ${str(currentLevel)}`, width - 70, 30, 16);
 
 	if (particle.checkCollisionWithCircle(finishCircle)) {
-		// console.log('here')
 		
 		if (cellWidth > cellWidthLimit) {
 			cellWidth -= 10;
 		}
 
+		// Update cols and rows for next maze generation.
 		cols = floor(width / cellWidth);
 		rows = floor(height / cellWidth);
 
@@ -114,18 +119,9 @@ function draw() {
 		currentLevel++;
 	}
 
-	// stroke('red');
-	// noFill();
-	// rect(startCell.i * cellWidth, startCell.j * cellWidth, cellWidth, cellWidth);
-
-	// stroke('green');
-	// rect(finishCell.i * cellWidth, finishCell.j * cellWidth, cellWidth, cellWidth);
-
-	// console.log(`${startCell.x}, ${startCell.y}`)
-	// console.log(`${finishCell.x}, ${finishCell.y}`)
-
+	// performance stuff
 	adjustedFrameCount++;
 	totalRunTimeMs += deltaTime;
 
-	// displayPerformance();
+	displayPerformance();
 }

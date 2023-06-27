@@ -1,4 +1,5 @@
 function uniqueBy(array, key) {
+	// removes duplicates in an array based on a specified feature
     var seen = {};
     return array.filter(function(item) {
         var k = key(item);
@@ -6,9 +7,10 @@ function uniqueBy(array, key) {
     })
 }
 
-// boundary connecting
-
 function isConnecting(wall, lastCoord, orientation, cellLength) {
+	// chekcs if there is any space in between the last boundary and the
+	// current boundary, depending on their orientations
+
 	let boundaryVal;
 
 	if (orientation == "horizontal") {
@@ -17,6 +19,7 @@ function isConnecting(wall, lastCoord, orientation, cellLength) {
 		boundaryVal = wall.a.y;
 	}
 
+	// given that each unprocessed boundary as a length of one cell width,
 	if (boundaryVal == lastCoord + cellLength) {
 		return true;
 	}

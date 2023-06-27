@@ -1,9 +1,10 @@
 class Boundary {
-	constructor(x1, y1, x2, y2, parentCellIndex) {
-		if (parentCellIndex === null) {
-			console.log('here')
-			return;
-		}
+
+	constructor(x1, y1, x2, y2) {
+
+		// A boundarie's a vector should always represent the point that is
+		// higher/further to the left. The boundary merging functions depend on
+		// this rule
 
 		if (x1 <= x2 && y1 <= y2) {
 			this.a = createVector(x1, y1);
@@ -13,6 +14,7 @@ class Boundary {
 			this.b = createVector(x1, y1);
 		}
 
+		// used to determine in what direction the boundary should be padded out in.
 		this.orientation;
 
 		if (this.a.x == this.b.x) {
@@ -21,6 +23,8 @@ class Boundary {
 			this.orientation = "horizontal";
 		}
 
+		// a boundary's color should be different from its neighbors. Useful
+		// for debugging boundaries.
 		this.red = random(255);
 		this.green = random(255);
 		this.blue = random(255);

@@ -8,29 +8,36 @@ class Particle {
 		}
 
 		this.hitboxRadius = radius;
+
+		// Deprecated attribute. Used for mouse based movement
 		this.isDragged = false;
+
 		this.velocity = speed;
 	}
 
-	showFullRays() {
-		drawPoint(this.pos, 'white');
-		for (let ray of this.rays) {
-			ray.show();
-		}
-	}
-
  	showCorrectRays() {
+		// 'correct rays' refer to rays that have been cut off at their
+		// intersections. All rays will at least intersect with the map borders.
  		for (let ray of this.rays) {
-			if (ray.getIntersections().length == 0) {
-				ray.show();
-				continue;
-			}
+
+			// The following condition may not ever be reached because of screen boundaries
+			// if (ray.getIntersections().length == 0) {
+			// 	ray.show();
+			// 	continue;
+			// }
 
 			let closestIntersection = ray.getClosestIntersection();
 
 			stroke('white');
 			push();
+
+			// Translating the origin to the particle's position is necessary
+			// because all other vectors will be relative to the particle's
+			// position.
 			translate(this.pos.x, this.pos.y);
+
+			// we can get the line that connects the particles position to the
+			// ray's closest intersection with vector subtraction
 			line(0, 0, closestIntersection.x - this.pos.x, closestIntersection.y - this.pos.y);
 			
 			pop();
@@ -38,6 +45,7 @@ class Particle {
 	}
 
 	showAllRays() {
+		// Show all rays unaltered for debugging purposes
  		for (let ray of this.rays) {
 			stroke('green');
 			push();
@@ -48,6 +56,7 @@ class Particle {
 	}
 
 	isHovered() {
+		// checks if the mouse is hovered over the hitbox
 		let distFromMouse = dist(this.pos.x, this.pos.y, mouseX, mouseY);
 
 		if (distFromMouse < this.hitboxRadius) {
@@ -60,6 +69,7 @@ class Particle {
 	showHitbox() {
 		let color;
 
+		// to make it visually interactive,
 		if (this.isDragged) {
 			color = 'red';
 		} else if (this.isHovered()) {
@@ -77,6 +87,8 @@ class Particle {
 	}
 
 	checkCollision(boundary) {
+		// detect collision between the hitbox and a given boundary
+
 		let d = createVector(boundary.b.x - boundary.a.x, boundary.b.y - boundary.a.y);
 		let f = createVector(boundary.a.x - this.pos.x, boundary.a.y - this.pos.y);
 
@@ -129,26 +141,29 @@ class Particle {
 		return false;
 	}
 
-	resetPosition() {
+	respawn() {
 		this.pos.x = respawnVector.x;
 		this.pos.y = respawnVector.y;
 	}
 
 	move() {
-		// keyboard based movement
-		if (keyIsDown(87)) { // up
+		// handles keyboard based movement
+
+		if (keyIsDown(87)) { 				// up - W
 			this.pos.y -= this.velocity;
-		} else if(keyIsDown(83)) { // down
+
+		} else if(keyIsDown(83)) { 			// down - S
 			this.pos.y += this.velocity;
 		}
 
-		if (keyIsDown(65)) { // left
+		if (keyIsDown(65)) { 				// left - A
 			this.pos.x -= this.velocity;
-		} else if(keyIsDown(68)) { // right
+
+		} else if(keyIsDown(68)) { 			// right - D
 			this.pos.x += this.velocity;
 		}
 
-		// mouse based movement
+		// mouse based movement - deprecated
 		//
 		// if (this.isDragged) {
 		// 	this.pos.x = mouseX;
@@ -162,21 +177,22 @@ class Particle {
 		let isColliding = this.checkCollisionWithAllBoundaries();
 
 		if (isColliding) {
-			this.resetPosition();
-			this.endDrag();
+			this.respawn();
+			// this.endDrag();
 		}
 
 	}
 
-	startDrag() {
-		this.isDragged = true;
-	}
+	// startDrag() {
+	// 	this.isDragged = true;
+	// }
 
-	endDrag() {
-		this.isDragged = false;
-	}
+	// endDrag() {
+	// 	this.isDragged = false;
+	// }
 
 	updateAllIntersections() {
+		// Updates ray-boundary intersections of all rays of particle
 		for (let ray of this.rays) {
 			ray.updateIntersections();
 		}

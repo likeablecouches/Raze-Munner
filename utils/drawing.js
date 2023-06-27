@@ -22,3 +22,18 @@ function drawBoundaries(drawEndPoints) {
 	}
 }
 
+function drawText(inText, x, y, fontSize) {
+	fill(255);
+	stroke(0);
+
+	if (fontSize) {
+		push()
+		textSize(fontSize);
+	}
+
+	text(inText, x, y);
+
+	if (fontSize) {
+		pop()
+	}
+}
